@@ -2,7 +2,6 @@ import fastify from "fastify";
 import corse from "@fastify/cors";
 
 const server = fastify ({logger: true});
-// origin:"*" // permite que "todos" possam acessar a API
 server.register(corse,{
     origin:"*",
 })
@@ -59,14 +58,9 @@ server.get("/drivers", async(request, response)=> {
 interface DriverParams {
     id: string
 }
-//recebendo os parametros do contrato acima
 server.get <{Params: DriverParams}>("/drivers/:id", async (reques, response) => {
-    //recebe uma string e converte para numero e guardando
     const id = parseInt(reques.params.id)
-    //find serve para procurar algo dentro de um vetor
-    // função que cada d é um elemento de drivers que tem suas propriedade
     const driver = drivers.find( d  => d.id === id);
-    //se o resultado estiver vazio 
     if(!driver) {
         response.type("application/json").code(404);
         return {message: "Driver Not Found"}
